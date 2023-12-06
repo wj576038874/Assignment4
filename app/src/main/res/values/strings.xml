@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">eBay Search</string>
+    <string-array name="categories">
+        <item>All</item>
+        <item>Art</item>
+        <item>Baby</item>
+        <item>Books</item>
+        <item>Clothing, Shoes and Accessories</item>
+        <item>Computer, Tablets and Network</item>
+        <item>Health and Beauty</item>
+        <item>Music</item>
+        <item>Video, Games and Consoles</item>
+    </string-array>
+</resources>

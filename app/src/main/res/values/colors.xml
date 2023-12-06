@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="tab_selected_color">#FFFFFFFF</color>
+    <color name="tab_text_color">#CE87FF</color>
+    <color name="button_background">#F4511E</color>
+    <color name="error">#FF0000</color>
+    <color name="splash_background">#512DA8</color>
+</resources>
