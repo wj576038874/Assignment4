@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.gson.Gson
@@ -19,6 +20,8 @@ import usc.csci571.assignment4.databinding.WishListBinding
 import usc.csci571.assignment4.gone
 import usc.csci571.assignment4.http.ApiService
 import usc.csci571.assignment4.http.RetrofitHelper
+import usc.csci571.assignment4.viewmodel.InteractionViewModel
+import usc.csci571.assignment4.viewmodel.RefreshWishEventBus
 import usc.csci571.assignment4.visible
 
 /**
@@ -56,6 +59,11 @@ class WishListFragment : Fragment() {
         binding.recycleView.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.recycleView.adapter = mAdapter
 
+        RefreshWishEventBus.instance.cartOperationData.observe(viewLifecycleOwner) {
+            //有添加心愿单操作 就刷新心愿单列表
+            queryFavorites()
+        }
+
         mAdapter.onItemClickListener = {
             val productsInfo = mAdapter.getItem(it)
             startActivity(Intent(requireContext(), ProductDetailActivity::class.java).apply {
@@ -79,7 +87,9 @@ class WishListFragment : Fragment() {
                     //success
                     Toast.makeText(
                         requireContext(),
-                        "${productsInfo.title?.get(0)?.substring(0, 10)}... was removed from wishlist",
+                        "${
+                            productsInfo.title?.get(0)?.substring(0, 10)
+                        }... was removed from wishlist",
                         Toast.LENGTH_SHORT
                     ).show()
                     imageView?.isEnabled = true
@@ -105,31 +115,35 @@ class WishListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (!isLoad || isRefresh) {
-            lifecycleScope.launch {
-                try {
-                    val baseResponse = apiService.queryFavorites()
-                    if (baseResponse.productsInfo.isNullOrEmpty()) {
-                        binding.recycleView.gone()
-                        binding.cardEmpty.visible()
-                    } else {
-                        binding.recycleView.visible()
-                        binding.cardEmpty.gone()
-                        mAdapter.setNewData(baseResponse.productsInfo.onEach {
-                            it.isCollected = true
-                        })
-                    }
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    Toast.makeText(
-                        requireContext(),
-                        "Fetch Error Please Try Again",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                } finally {
-                    binding.progress.gone()
-                    isLoad = true
+        if (!isLoad) {
+            queryFavorites()
+        }
+    }
+
+    private fun queryFavorites() {
+        lifecycleScope.launch {
+            try {
+                val baseResponse = apiService.queryFavorites()
+                if (baseResponse.productsInfo.isNullOrEmpty()) {
+                    binding.recycleView.gone()
+                    binding.cardEmpty.visible()
+                } else {
+                    binding.recycleView.visible()
+                    binding.cardEmpty.gone()
+                    mAdapter.setNewData(baseResponse.productsInfo.onEach {
+                        it.isCollected = true
+                    })
                 }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(
+                    requireContext(),
+                    "Fetch Error Please Try Again",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } finally {
+                binding.progress.gone()
+                isLoad = true
             }
         }
     }

@@ -16,6 +16,7 @@ import usc.csci571.assignment4.databinding.ActivitySearchResultBinding
 import usc.csci571.assignment4.fragment.WishListFragment
 import usc.csci571.assignment4.http.ApiService
 import usc.csci571.assignment4.http.RetrofitHelper
+import usc.csci571.assignment4.viewmodel.RefreshWishEventBus
 
 /**
  * author: wenjie
@@ -83,7 +84,7 @@ class SearchResultActivity : AppCompatActivity() {
                         "${productsInfo.title?.get(0)?.substring(0, 10)}... was added to wishlist",
                         Toast.LENGTH_SHORT
                     ).show()
-                    WishListFragment.isRefresh = true
+                    RefreshWishEventBus.instance.postCartOperation(true)
                     imageView?.isEnabled = true
                     imageView?.setImageResource(R.drawable.ic_cart_remove)
                     mAdapter.getItem(it).isCollected = true
@@ -114,7 +115,7 @@ class SearchResultActivity : AppCompatActivity() {
                         }... was removed from wishlist",
                         Toast.LENGTH_SHORT
                     ).show()
-                    WishListFragment.isRefresh = true
+                    RefreshWishEventBus.instance.postCartOperation(false)
                     imageView?.isEnabled = true
                     imageView?.setImageResource(R.drawable.ic_cart_plus)
                     mAdapter.getItem(it).isCollected = false
