@@ -10,9 +10,9 @@
         android:allowNativeHeapPointerTagging="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/shopping"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/shopping"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:windowSoftInputMode="adjustResize">
 
