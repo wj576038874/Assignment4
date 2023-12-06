@@ -48,11 +48,9 @@ class SimilarFragment : Fragment() {
         binding.recycleView.layoutManager = LinearLayoutManager(requireContext())
         binding.recycleView.adapter = mAdapter
         viewModel.productDetailData.observe(viewLifecycleOwner) { productDetail ->
-            val data = productDetail.similarItems?.also { item ->
-                item.map {
-                    //P8DT14H50M43S
-                    it.timeLeftInt = it.timeLeft?.substring(1, 2)?.toInt() ?: 0
-                }
+            val data = productDetail.similarItems?.onEach {
+                //P8DT14H50M43S
+                it.timeLeftInt = it.timeLeft?.substring(1, 2)?.toInt() ?: 0
             }
             if (data.isNullOrEmpty()) {
                 binding.recycleView.gone()

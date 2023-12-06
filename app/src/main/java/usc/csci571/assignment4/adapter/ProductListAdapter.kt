@@ -26,15 +26,13 @@ typealias OnItemClickListener = (Int) -> Unit
 class ProductListAdapter : RecyclerView.Adapter<ProductListAdapter.SearchViewHolder>() {
 
     private var mData = listOf<ProductsInfo>()
-    private var favoriteList = listOf<ProductsInfo>()
 
     var onCartRemoveListener: OnCartRemoveListener? = null
     var onCartPlusListener: OnCartPlusListener? = null
     var onItemClickListener: OnItemClickListener? = null
 
-    fun setNewData(data: List<ProductsInfo>?, favoriteList: List<ProductsInfo>) {
+    fun setNewData(data: List<ProductsInfo>?) {
         this.mData = data ?: listOf()
-        this.favoriteList = favoriteList
         notifyDataSetChanged()
     }
 

@@ -148,7 +148,7 @@ class SearchResultActivity : AppCompatActivity() {
                             item.itemId == it.itemId
                         } != null
                     }
-                }, favoriteList)
+                })
             } catch (e: Exception) {
                 e.printStackTrace()
                 Toast.makeText(

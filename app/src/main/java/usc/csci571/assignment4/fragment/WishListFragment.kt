@@ -58,14 +58,15 @@ class WishListFragment : Fragment() {
             lifecycleScope.launch {
                 try {
                     val baseResponse = apiService.queryFavorites()
-
                     if (baseResponse.productsInfo.isNullOrEmpty()) {
                         binding.recycleView.gone()
                         binding.cardEmpty.visible()
                     } else {
                         binding.recycleView.visible()
                         binding.cardEmpty.gone()
-                        mAdapter.setNewData(baseResponse.productsInfo, baseResponse.productsInfo)
+                        mAdapter.setNewData(baseResponse.productsInfo.onEach {
+                            it.isCollected = true
+                        })
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()

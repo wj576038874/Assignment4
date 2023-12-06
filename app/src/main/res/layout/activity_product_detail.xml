@@ -58,6 +58,15 @@
 
         </LinearLayout>
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_plus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="20dp"
+            android:backgroundTint="@color/button_background"
+            android:src="@drawable/cart_plus"
+            app:tint="@color/white" />
 
     </FrameLayout>
 

@@ -69,6 +69,10 @@ class ProductDetailActivity : AppCompatActivity() {
         }
         binding.viewPager2.adapter = pagerAdapter
 
+        binding.btnPlus.setOnClickListener {
+
+        }
+
         TabLayoutMediator(binding.tabLayout, binding.viewPager2) { tab, position ->
             tab.text = tabs[position].first
             tab.setIcon(tabs[position].second)
