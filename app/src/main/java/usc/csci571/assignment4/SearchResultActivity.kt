@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 import usc.csci571.assignment4.adapter.ProductListAdapter
 import usc.csci571.assignment4.bean.ProductsInfo
 import usc.csci571.assignment4.databinding.ActivitySearchResultBinding
+import usc.csci571.assignment4.fragment.WishListFragment
 import usc.csci571.assignment4.http.ApiService
 import usc.csci571.assignment4.http.RetrofitHelper
 
@@ -31,8 +32,6 @@ class SearchResultActivity : AppCompatActivity() {
     private var condition: String? = null
     private var distance: String? = null
     private var shipping: String? = null
-
-    private var favoriteList = listOf<ProductsInfo>()
 
     private val apiService by lazy(LazyThreadSafetyMode.NONE) {
         RetrofitHelper.getRetrofit().create(ApiService::class.java)
@@ -54,6 +53,13 @@ class SearchResultActivity : AppCompatActivity() {
         distance = intent?.getStringExtra("distance") ?: "10"
         shipping = intent?.getStringExtra("shipping")
 
+        Log.e("asd" , keyword)
+        Log.e("asd" , category.toString())
+        Log.e("asd" , currentLocation.toString())
+        Log.e("asd" , condition.toString())
+        Log.e("asd" , distance.toString())
+        Log.e("asd" , shipping.toString())
+
         binding.toolbar.setNavigationOnClickListener {
             finish()
         }
@@ -72,6 +78,12 @@ class SearchResultActivity : AppCompatActivity() {
                 try {
                     apiService.add(item = item)
                     //success
+                    Toast.makeText(
+                        this@SearchResultActivity,
+                        "${productsInfo.title?.subList(0, 10)}... was added to wishlist",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    WishListFragment.isRefresh = true
                     imageView?.isEnabled = true
                     imageView?.setImageResource(R.drawable.ic_cart_remove)
                     mAdapter.getItem(it).isCollected = true
@@ -95,11 +107,22 @@ class SearchResultActivity : AppCompatActivity() {
                 try {
                     apiService.del(item = item)
                     //success
+                    Toast.makeText(
+                        this@SearchResultActivity,
+                        "${productsInfo.title?.subList(0, 10)}... was removed from wishlist",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    WishListFragment.isRefresh = true
                     imageView?.isEnabled = true
                     imageView?.setImageResource(R.drawable.ic_cart_plus)
                     mAdapter.getItem(it).isCollected = false
                 } catch (e: Exception) {
                     e.printStackTrace()
+                    Toast.makeText(
+                        this@SearchResultActivity,
+                        "Fetch Error Please Try Again",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 } finally {
                     imageView?.isEnabled = true
                 }
@@ -111,6 +134,7 @@ class SearchResultActivity : AppCompatActivity() {
             startActivity(Intent(this, ProductDetailActivity::class.java).apply {
                 putExtra("itemTitle", productsInfo.title?.get(0))
                 putExtra("itemId", productsInfo.itemId?.get(0))
+                putExtra("isCollected", productsInfo.isCollected)
             })
         }
 
@@ -122,7 +146,7 @@ class SearchResultActivity : AppCompatActivity() {
             try {
                 //先请求收藏
                 val response = apiService.queryFavorites()
-                favoriteList = response.productsInfo ?: listOf()
+                val favoriteList = response.productsInfo ?: listOf()
 
                 val queryMap = mutableMapOf<String, String>()
                 queryMap["keyword"] = keyword

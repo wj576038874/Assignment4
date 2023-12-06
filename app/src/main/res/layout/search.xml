@@ -170,13 +170,13 @@
                 android:layout_width="30dp"
                 android:layout_height="wrap_content" />
 
-            <AutoCompleteTextView
+            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                 android:id="@+id/zipcodeInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="zipcode"
                 android:enabled="false"
-                android:inputType="text"
+                android:inputType="number"
                 android:maxLines="5" />
         </LinearLayout>
 

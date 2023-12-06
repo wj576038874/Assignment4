@@ -31,6 +31,7 @@ class ProductDetailActivity : AppCompatActivity() {
 
     private var itemId: String? = null
     private var itemTitle: String? = null
+    private var isCollected = false
 
     private val tabs = listOf(
         "PRODUCT" to R.drawable.information_variant_selected,
@@ -63,14 +64,25 @@ class ProductDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
         itemId = intent?.getStringExtra("itemId")
         itemTitle = intent?.getStringExtra("itemTitle")
+        isCollected = intent?.getBooleanExtra("isCollected", false) ?: false
         binding.toolbar.title = itemTitle
         binding.toolbar.setNavigationOnClickListener {
             finish()
         }
         binding.viewPager2.adapter = pagerAdapter
 
-        binding.btnPlus.setOnClickListener {
+        if (isCollected) {
+            binding.btnCart.setImageResource(R.drawable.ic_cart_remove)
+        } else {
+            binding.btnCart.setImageResource(R.drawable.ic_cart_plus)
+        }
 
+        binding.btnCart.setOnClickListener {
+//            Toast.makeText(
+//                this,
+//                "${productsInfo.title?.subList(0, 10)}... was added to wishlist",
+//                Toast.LENGTH_SHORT
+//            ).show()
         }
 
         TabLayoutMediator(binding.tabLayout, binding.viewPager2) { tab, position ->

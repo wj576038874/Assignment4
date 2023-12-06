@@ -1,29 +1,23 @@
 package usc.csci571.assignment4.fragment
 
+import android.R
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.ArrayAdapter
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import okhttp3.Call
-import okhttp3.Callback
-import okhttp3.HttpUrl
-import okhttp3.Request
-import okhttp3.Response
 import usc.csci571.assignment4.SearchResultActivity
 import usc.csci571.assignment4.databinding.SearchBinding
 import usc.csci571.assignment4.gone
 import usc.csci571.assignment4.http.ApiService
-import usc.csci571.assignment4.http.OkHttpHelper
 import usc.csci571.assignment4.http.RetrofitHelper
 import usc.csci571.assignment4.visible
-import java.io.IOException
 
 /**
  * author: wenjie
@@ -36,6 +30,9 @@ class SearchFragment : Fragment() {
 
     private val binding get() = _binding!!
 
+    private val apiService by lazy(LazyThreadSafetyMode.NONE) {
+        RetrofitHelper.getRetrofit().create(ApiService::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,34 +53,40 @@ class SearchFragment : Fragment() {
     private fun search() {
         val keyword = binding.keywordInput.text?.toString() ?: ""
         val category = getCategory()
-        val currentLocation = "30022"
-        val distance = if (binding.distanceInput.text?.toString().isNullOrBlank()){
+        val currentLocation = if (binding.radioCurLocation.isChecked) {
+            "90007"
+        } else {
+            binding.zipcodeInput.text.toString()
+        }
+
+        val distance = if (binding.distanceInput.text?.toString().isNullOrBlank()) {
             "10"
-        }else{
+        } else {
             binding.distanceInput.text.toString()
         }
-        val conditions = mutableListOf<String>()
+
         //New,Used,Unspecified
-        if (binding.conditionNew.isChecked) {
-            conditions += "New"
-        }
-        if (binding.conditionUsed.isChecked) {
-            conditions += "Used"
-        }
-        if (binding.conditionUnspecified.isChecked) {
-            conditions += "Unspecified"
-        }
-        val condition = conditions.joinToString(",")
-        Log.e("condition", condition)
-        val shipping = if (binding.shippingPkup.isChecked && binding.shippingFree.isChecked) {
-            "LocalPickupOnly,FreeShippingOnly"
-        } else if (binding.shippingPkup.isChecked) {
-            "LocalPickupOnly"
-        } else if (binding.shippingFree.isChecked) {
-            "FreeShippingOnly"
-        } else {
-            null
-        }
+        val condition = mutableListOf<String>().also {
+            if (binding.conditionNew.isChecked) {
+                it += "New"
+            }
+            if (binding.conditionUsed.isChecked) {
+                it += "Used"
+            }
+            if (binding.conditionUnspecified.isChecked) {
+                it += "Unspecified"
+            }
+        }.joinToString(",")
+
+        val shipping = mutableListOf<String>().also {
+            if (binding.shippingPkup.isChecked) {
+                it += "LocalPickupOnly"
+            }
+            if (binding.shippingFree.isChecked) {
+                it += "FreeShippingOnly"
+            }
+        }.joinToString(",")
+
         val intent = Intent(requireContext(), SearchResultActivity::class.java)
         intent.putExtra("keyword", keyword)
         intent.putExtra("category", category)
@@ -195,6 +198,28 @@ class SearchFragment : Fragment() {
             }
         })
 
+        binding.zipcodeInput.addTextChangedListener(onTextChanged = { _, _, _, _ ->
+            val input = binding.zipcodeInput.text?.toString()?.trim()
+            if (input.isNullOrBlank()) {
+                binding.zipcodeAlert.visible()
+            } else {
+                binding.zipcodeAlert.gone()
+                lifecycleScope.launch {
+                    try {
+                        val zipCodeResult = apiService.getZipCode(input)
+                        val adapter = ArrayAdapter(
+                            requireContext(),
+                            R.layout.simple_dropdown_item_1line,
+                            zipCodeResult.postcodes
+                        )
+                        binding.zipcodeInput.setAdapter(adapter)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+        })
+
         binding.enableNearbySearch.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
                 binding.LocationLayout.visible()
@@ -206,6 +231,7 @@ class SearchFragment : Fragment() {
         binding.radioCurLocation.setOnCheckedChangeListener { buttonView, isChecked ->
             binding.radioInputLocation.isChecked = !isChecked
         }
+
         binding.radioInputLocation.setOnCheckedChangeListener { buttonView, isChecked ->
             binding.radioCurLocation.isChecked = !isChecked
             binding.zipcodeInput.isEnabled = isChecked

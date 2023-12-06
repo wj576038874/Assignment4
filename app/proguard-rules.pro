@@ -24,3 +24,5 @@
      <init>();
      void attachBaseContext(android.content.Context);
 }
+#javabean类不混淆
+-keep class usc.csci571.assignment4.bean.** {*;}

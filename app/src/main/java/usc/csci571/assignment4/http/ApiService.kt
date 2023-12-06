@@ -6,6 +6,7 @@ import retrofit2.http.Query
 import retrofit2.http.QueryMap
 import usc.csci571.assignment4.bean.ProductDetail
 import usc.csci571.assignment4.bean.ProductResponse
+import usc.csci571.assignment4.bean.ZipCodeResult
 
 /**
  * author: wenjie
@@ -32,4 +33,7 @@ interface ApiService {
         @Query("itemId") itemId: String,
         @Query("itemTitle") itemTitle: String
     ): ProductDetail
+
+    @GET("/zipQuery")
+    suspend fun getZipCode(@Query("zipcode") zipcode: String): ZipCodeResult
 }
