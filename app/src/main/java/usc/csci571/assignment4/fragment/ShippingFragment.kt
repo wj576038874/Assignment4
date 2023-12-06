@@ -5,8 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import usc.csci571.assignment4.databinding.FragmnetProductBinding
-import usc.csci571.assignment4.databinding.SearchBinding
+import usc.csci571.assignment4.databinding.FragmentShippingBinding
 
 /**
  * author: wenjie
@@ -15,9 +14,8 @@ import usc.csci571.assignment4.databinding.SearchBinding
  */
 class ShippingFragment : Fragment() {
 
-    private var _binding: FragmnetProductBinding? = null
+    private var _binding: FragmentShippingBinding? = null
 
-    //
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -25,7 +23,7 @@ class ShippingFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmnetProductBinding.inflate(inflater, container, false)
+        _binding = FragmentShippingBinding.inflate(inflater, container, false)
         return binding.root
     }
 

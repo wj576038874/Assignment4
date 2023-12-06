@@ -86,6 +86,7 @@ class ProductDetailActivity : AppCompatActivity() {
                 }
                 val productResponse = apiService.productDetailQuery(itemId!!, itemTitle!!)
                 viewModel.post(productResponse)
+                binding.viewPager2.visible()
             } catch (e: Exception) {
                 e.printStackTrace()
                 Toast.makeText(this@ProductDetailActivity, "Fetching Error", Toast.LENGTH_SHORT)

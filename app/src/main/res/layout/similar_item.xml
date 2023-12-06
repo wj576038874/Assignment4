@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp">
+
+    <ImageView
+        android:id="@+id/cover"
+        android:layout_width="150dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="w,4:3"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintLeft_toRightOf="@+id/cover"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="GENUINE APPLE 30-pin to USB Charge Sync Cable iPhone 3 3G 4 4s iPod iPad 1 2 3 " />
+
+    <TextView
+        android:id="@+id/tv_shipping"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintLeft_toLeftOf="@+id/tv_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title"
+        tools:text="0.00" />
+
+
+    <TextView
+        android:id="@+id/tv_time_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_shipping"
+        tools:text="4 Days Left" />
+
+    <TextView
+        android:id="@+id/tv_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/splash_background"
+        app:layout_constraintLeft_toLeftOf="@+id/tv_time_left"
+        app:layout_constraintTop_toBottomOf="@+id/tv_time_left"
+        tools:text="0.00" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
