@@ -1,6 +1,5 @@
 package usc.csci571.assignment4.bean
 
-import com.google.gson.annotations.SerializedName
 
 /**
  * author: wenjie
@@ -35,13 +34,37 @@ data class ItemDetails(
     val Title: String? = null,
     val CurrentPrice: Price? = null,
     val ItemSpecifics: ItemSpecifics? = null,
+    val ReturnPolicy: ReturnPolicy? = null,
+    val Seller: Seller? = null,
+    val GlobalShipping: Boolean = false,
+    val HandlingTime: Int = 0,
+    val ConditionDescription: String? = null,
+    val Storefront: Storefront? = null,
+)
+
+data class Storefront(
+    val StoreURL: String? = null,
+    val StoreName: String? = null,
+)
+
+data class Seller(
+    val UserID: String? = null,
+    val FeedbackRatingStar: String? = null,
+    val FeedbackScore: String? = null,
+    val PositiveFeedbackPercent: Int = 0
+)
+
+data class ReturnPolicy(
+    val Refund: String? = null,
+    val ReturnsWithin: String? = null,
+    val ReturnsAccepted: String? = null,
+    val ShippingCostPaidBy: String? = null,
+    val InternationalReturnsAccepted: String? = null
 )
 
 data class Price(
-    @SerializedName("Value")
-    val value: String? = null,
-    @SerializedName("CurrencyID")
-    val currencyID: String? = null
+    val Value: String? = null,
+    val CurrencyID: String? = null
 )
 
 data class Photo(

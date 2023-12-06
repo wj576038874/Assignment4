@@ -1,16 +1,15 @@
 package usc.csci571.assignment4
 
 import android.os.Bundle
-import android.util.Log
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import usc.csci571.assignment4.adapter.ProductDetailPageAdapter
+import usc.csci571.assignment4.bean.ProductsInfo
 import usc.csci571.assignment4.databinding.ActivityProductDetailBinding
 import usc.csci571.assignment4.fragment.PhotoFragment
 import usc.csci571.assignment4.fragment.ProductFragment
@@ -19,6 +18,7 @@ import usc.csci571.assignment4.fragment.SimilarFragment
 import usc.csci571.assignment4.http.ApiService
 import usc.csci571.assignment4.http.RetrofitHelper
 import usc.csci571.assignment4.viewmodel.InteractionViewModel
+import usc.csci571.assignment4.viewmodel.RefreshWishEventBus
 
 /**
  * author: wenjie
@@ -29,9 +29,7 @@ class ProductDetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityProductDetailBinding
 
-    private var itemId: String? = null
-    private var itemTitle: String? = null
-    private var isCollected = false
+    private var productsInfo: ProductsInfo? = null
 
     private val tabs = listOf(
         "PRODUCT" to R.drawable.information_variant_selected,
@@ -62,27 +60,80 @@ class ProductDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityProductDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        itemId = intent?.getStringExtra("itemId")
-        itemTitle = intent?.getStringExtra("itemTitle")
-        isCollected = intent?.getBooleanExtra("isCollected", false) ?: false
-        binding.toolbar.title = itemTitle
+        val param = intent?.getStringExtra("product")
+        productsInfo = Gson().fromJson(param, ProductsInfo::class.java)
+
+        binding.toolbar.title = productsInfo?.title.toString()
         binding.toolbar.setNavigationOnClickListener {
             finish()
         }
         binding.viewPager2.adapter = pagerAdapter
 
-        if (isCollected) {
+        if (productsInfo?.isCollected == true) {
             binding.btnCart.setImageResource(R.drawable.ic_cart_remove)
         } else {
             binding.btnCart.setImageResource(R.drawable.ic_cart_plus)
         }
 
+        productsInfo?.let {
+            viewModel.postInfo(it)
+        }
+
         binding.btnCart.setOnClickListener {
-//            Toast.makeText(
-//                this,
-//                "${productsInfo.title?.subList(0, 10)}... was added to wishlist",
-//                Toast.LENGTH_SHORT
-//            ).show()
+            if (param.isNullOrBlank()) return@setOnClickListener
+            if (productsInfo?.isCollected == true) {
+                //删除
+                lifecycleScope.launch {
+                    try {
+                        apiService.del(item = param)
+                        //success
+                        Toast.makeText(
+                            this@ProductDetailActivity,
+                            "${
+                                productsInfo?.title?.get(0)?.substring(0, 10)
+                            }... was removed from wishlist",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        binding.btnCart.setImageResource(R.drawable.ic_cart_plus)
+                        RefreshWishEventBus.instance.postCartOperation(false)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        Toast.makeText(
+                            this@ProductDetailActivity,
+                            "Fetch Error Please Try Again",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } finally {
+
+                    }
+                }
+            } else {
+                //添加
+                lifecycleScope.launch {
+                    try {
+                        apiService.add(item = param)
+                        //success
+                        Toast.makeText(
+                            this@ProductDetailActivity,
+                            "${
+                                productsInfo?.title?.get(0)?.substring(0, 10)
+                            }... was add to wishlist",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        binding.btnCart.setImageResource(R.drawable.ic_cart_remove)
+                        RefreshWishEventBus.instance.postCartOperation(false)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        Toast.makeText(
+                            this@ProductDetailActivity,
+                            "Fetch Error Please Try Again",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } finally {
+
+                    }
+                }
+            }
         }
 
         TabLayoutMediator(binding.tabLayout, binding.viewPager2) { tab, position ->
@@ -92,6 +143,8 @@ class ProductDetailActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             try {
+                val itemId = productsInfo?.itemId?.get(0)
+                val itemTitle = productsInfo?.title?.get(0)
                 if (itemId.isNullOrBlank() || itemTitle.isNullOrBlank()) {
                     Toast.makeText(
                         this@ProductDetailActivity,
@@ -100,8 +153,8 @@ class ProductDetailActivity : AppCompatActivity() {
                     ).show()
                     return@launch
                 }
-                val productResponse = apiService.productDetailQuery(itemId!!, itemTitle!!)
-                viewModel.post(productResponse)
+                val productResponse = apiService.productDetailQuery(itemId, itemTitle)
+                viewModel.postDetail(productResponse)
                 binding.viewPager2.visible()
             } catch (e: Exception) {
                 e.printStackTrace()

@@ -115,7 +115,7 @@ class SearchResultActivity : AppCompatActivity() {
                         }... was removed from wishlist",
                         Toast.LENGTH_SHORT
                     ).show()
-                    RefreshWishEventBus.instance.postCartOperation(false)
+                    RefreshWishEventBus.instance.postCartOperation(true)
                     imageView?.isEnabled = true
                     imageView?.setImageResource(R.drawable.ic_cart_plus)
                     mAdapter.getItem(it).isCollected = false
@@ -134,10 +134,9 @@ class SearchResultActivity : AppCompatActivity() {
 
         mAdapter.onItemClickListener = {
             val productsInfo = mAdapter.getItem(it)
+            val item = Gson().toJson(productsInfo)
             startActivity(Intent(this, ProductDetailActivity::class.java).apply {
-                putExtra("itemTitle", productsInfo.title?.get(0))
-                putExtra("itemId", productsInfo.itemId?.get(0))
-                putExtra("isCollected", productsInfo.isCollected)
+                putExtra("product", item)
             })
         }
 

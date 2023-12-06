@@ -62,6 +62,7 @@ class WishListFragment : Fragment() {
         RefreshWishEventBus.instance.cartOperationData.observe(viewLifecycleOwner) {
             //有添加心愿单操作 就刷新心愿单列表
             queryFavorites()
+            Toast.makeText(context, "queryFavorites", Toast.LENGTH_SHORT).show()
         }
 
         mAdapter.onItemClickListener = {

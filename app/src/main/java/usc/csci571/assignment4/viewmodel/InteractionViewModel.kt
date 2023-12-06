@@ -3,8 +3,8 @@ package usc.csci571.assignment4.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.gson.JsonObject
 import usc.csci571.assignment4.bean.ProductDetail
+import usc.csci571.assignment4.bean.ProductsInfo
 
 /**
  * author: wenjie
@@ -18,7 +18,15 @@ class InteractionViewModel : ViewModel() {
         get() = _productDetailData
 
 
-    fun post(detail: ProductDetail) {
+    private val _productInfoData = MutableLiveData<ProductsInfo>()
+    val productInfoData: LiveData<ProductsInfo>
+        get() = _productInfoData
+
+    fun postDetail(detail: ProductDetail) {
         _productDetailData.value = detail
+    }
+
+    fun postInfo(productsInfo: ProductsInfo) {
+        _productInfoData.value = productsInfo
     }
 }

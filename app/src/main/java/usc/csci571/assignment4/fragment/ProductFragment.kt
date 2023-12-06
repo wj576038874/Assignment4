@@ -46,8 +46,8 @@ class ProductFragment : Fragment() {
             binding.viewPager2.adapter = pictureAdapter
             binding.tvTitle.text = itemDetails?.Title
             binding.tvPriceWithShipping.text =
-                "$ ${itemDetails?.CurrentPrice?.value} with Free Shipping"
-            binding.tvPrice.text = "$ ${itemDetails?.CurrentPrice?.value}"
+                "$ ${itemDetails?.CurrentPrice?.Value} with Free Shipping"
+            binding.tvPrice.text = "$ ${itemDetails?.CurrentPrice?.Value}"
             binding.tvBrand.text = "${
                 itemDetails?.ItemSpecifics?.NameValueList?.find {
                     it.Name == "Brand"
