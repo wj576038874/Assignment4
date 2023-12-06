@@ -73,7 +73,7 @@ class SearchResultActivity : AppCompatActivity() {
                     apiService.add(item = item)
                     //success
                     imageView?.isEnabled = true
-                    imageView?.setImageResource(R.drawable.cart_remove)
+                    imageView?.setImageResource(R.drawable.ic_cart_remove)
                     mAdapter.getItem(it).isCollected = true
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -96,7 +96,7 @@ class SearchResultActivity : AppCompatActivity() {
                     apiService.del(item = item)
                     //success
                     imageView?.isEnabled = true
-                    imageView?.setImageResource(R.drawable.cart_plus)
+                    imageView?.setImageResource(R.drawable.ic_cart_plus)
                     mAdapter.getItem(it).isCollected = false
                 } catch (e: Exception) {
                     e.printStackTrace()

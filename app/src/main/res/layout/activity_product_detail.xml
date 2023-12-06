@@ -65,7 +65,7 @@
             android:layout_gravity="bottom|end"
             android:layout_margin="20dp"
             android:backgroundTint="@color/button_background"
-            android:src="@drawable/cart_plus"
+            android:src="@drawable/ic_cart_plus"
             app:tint="@color/white" />
 
     </FrameLayout>

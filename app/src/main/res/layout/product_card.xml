@@ -84,7 +84,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginRight="8dp"
-            android:src="@drawable/cart_plus"
+            android:src="@drawable/ic_cart_plus"
             app:layout_constraintBottom_toBottomOf="@+id/shipping_type"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@+id/zipcode" />

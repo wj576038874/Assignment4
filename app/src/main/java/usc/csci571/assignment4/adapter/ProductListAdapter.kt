@@ -65,9 +65,9 @@ class ProductListAdapter : RecyclerView.Adapter<ProductListAdapter.SearchViewHol
         }
 
         if (productsInfo.isCollected) {
-            holder.binding.cartOperation.setImageResource(R.drawable.cart_remove)
+            holder.binding.cartOperation.setImageResource(R.drawable.ic_cart_remove)
         } else {
-            holder.binding.cartOperation.setImageResource(R.drawable.cart_plus)
+            holder.binding.cartOperation.setImageResource(R.drawable.ic_cart_plus)
         }
 
         holder.binding.cartOperation.setOnClickListener {
