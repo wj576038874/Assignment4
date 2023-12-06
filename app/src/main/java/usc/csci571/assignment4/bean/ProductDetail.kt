@@ -1,5 +1,7 @@
 package usc.csci571.assignment4.bean
 
+import com.google.gson.annotations.SerializedName
+
 /**
  * author: wenjie
  * date: 2023/12/6 11:12
@@ -17,7 +19,7 @@ data class SimilarItem(
     val viewItemURL: String? = null,
     val globalId: String? = null,
     val timeLeft: String? = null,
-    var timeLeftInt: Int = 0 ,
+    var timeLeftInt: Int = 0,
     val primaryCategoryId: String? = null,
     val primaryCategoryName: String? = null,
     val country: String? = null,
@@ -31,8 +33,15 @@ data class SimilarItem(
 data class ItemDetails(
     val PictureURL: List<String>? = null,
     val Title: String? = null,
-    val CurrentPrice: CurrentPrice? = null,
+    val CurrentPrice: Price? = null,
     val ItemSpecifics: ItemSpecifics? = null,
+)
+
+data class Price(
+    @SerializedName("Value")
+    val value: String? = null,
+    @SerializedName("CurrencyID")
+    val currencyID: String? = null
 )
 
 data class Photo(

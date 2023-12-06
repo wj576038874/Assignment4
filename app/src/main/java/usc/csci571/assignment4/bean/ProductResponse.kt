@@ -1,5 +1,6 @@
 package usc.csci571.assignment4.bean
 
+import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 /**
@@ -16,6 +17,7 @@ data class ProductsInfo(
     @SerializedName("id")
     val id: String? = null,
     //本地存储方便做搜藏可取消收藏
+    @Expose
     var isCollected: Boolean = false,
     val itemId: List<String>? = null,
     val title: List<String>? = null,
@@ -111,8 +113,8 @@ data class Condition(
 )
 
 data class CurrentPrice(
-    @SerializedName(value = "@currencyId", alternate = ["CurrencyID"])
+    @SerializedName("@currencyId")
     val currencyId: String? = null,
-    @SerializedName(value = "__value__", alternate = ["Value"])
+    @SerializedName("__value__")
     val value: String? = null
 )

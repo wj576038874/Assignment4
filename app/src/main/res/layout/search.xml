@@ -18,9 +18,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:text="iphone"
         android:hint="Enter Keyword"
-        android:inputType="text" />
+        android:inputType="text"
+        android:text="iphone" />
 
     <TextView
         android:id="@+id/keywordAlert"
@@ -35,13 +35,13 @@
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
         android:text="Category" />
 
     <Spinner
         android:id="@+id/category"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:layout_marginBottom="5dp"
         android:entries="@array/categories" />
 
@@ -49,7 +49,7 @@
         android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
         android:text="Condition" />
 
     <LinearLayout
@@ -83,7 +83,7 @@
         android:id="@+id/textView4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
         android:text="Shipping Options" />
 
     <LinearLayout
@@ -174,8 +174,8 @@
                 android:id="@+id/zipcodeInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="zipcode"
                 android:enabled="false"
+                android:hint="zipcode"
                 android:inputType="number"
                 android:maxLines="5" />
         </LinearLayout>

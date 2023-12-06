@@ -72,14 +72,14 @@ class ProductListAdapter : RecyclerView.Adapter<ProductListAdapter.SearchViewHol
 
         holder.binding.cartOperation.setOnClickListener {
             if (productsInfo.isCollected) {
-                onCartRemoveListener?.invoke(position)
+                onCartRemoveListener?.invoke(holder.adapterPosition)
             } else {
-                onCartPlusListener?.invoke(position)
+                onCartPlusListener?.invoke(holder.adapterPosition)
             }
         }
 
         holder.itemView.setOnClickListener {
-            onItemClickListener?.invoke(position)
+            onItemClickListener?.invoke(holder.adapterPosition)
         }
     }
 

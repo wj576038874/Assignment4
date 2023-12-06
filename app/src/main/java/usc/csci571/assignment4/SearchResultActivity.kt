@@ -53,12 +53,12 @@ class SearchResultActivity : AppCompatActivity() {
         distance = intent?.getStringExtra("distance") ?: "10"
         shipping = intent?.getStringExtra("shipping")
 
-        Log.e("asd" , keyword)
-        Log.e("asd" , category.toString())
-        Log.e("asd" , currentLocation.toString())
-        Log.e("asd" , condition.toString())
-        Log.e("asd" , distance.toString())
-        Log.e("asd" , shipping.toString())
+        Log.e("asd", keyword)
+        Log.e("asd", category.toString())
+        Log.e("asd", currentLocation.toString())
+        Log.e("asd", condition.toString())
+        Log.e("asd", distance.toString())
+        Log.e("asd", shipping.toString())
 
         binding.toolbar.setNavigationOnClickListener {
             finish()
@@ -80,7 +80,7 @@ class SearchResultActivity : AppCompatActivity() {
                     //success
                     Toast.makeText(
                         this@SearchResultActivity,
-                        "${productsInfo.title?.subList(0, 10)}... was added to wishlist",
+                        "${productsInfo.title?.get(0)?.substring(0, 10)}... was added to wishlist",
                         Toast.LENGTH_SHORT
                     ).show()
                     WishListFragment.isRefresh = true
@@ -109,7 +109,9 @@ class SearchResultActivity : AppCompatActivity() {
                     //success
                     Toast.makeText(
                         this@SearchResultActivity,
-                        "${productsInfo.title?.subList(0, 10)}... was removed from wishlist",
+                        "${
+                            productsInfo.title?.get(0)?.substring(0, 10)
+                        }... was removed from wishlist",
                         Toast.LENGTH_SHORT
                     ).show()
                     WishListFragment.isRefresh = true

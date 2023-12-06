@@ -79,7 +79,7 @@ class WishListFragment : Fragment() {
                     //success
                     Toast.makeText(
                         requireContext(),
-                        "${productsInfo.title?.subList(0, 10)}... was removed from wishlist",
+                        "${productsInfo.title?.get(0)?.substring(0, 10)}... was removed from wishlist",
                         Toast.LENGTH_SHORT
                     ).show()
                     imageView?.isEnabled = true

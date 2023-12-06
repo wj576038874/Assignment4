@@ -180,6 +180,10 @@ class SearchFragment : Fragment() {
 
         binding.clearBtn.setOnClickListener {
             binding.keywordAlert.gone()
+            binding.zipcodeAlert.gone()
+            binding.LocationLayout.gone()
+            binding.enableNearbySearch.isChecked = false
+            binding.radioCurLocation.isChecked = true
             binding.category.setSelection(0)
             binding.conditionNew.isChecked = false
             binding.conditionUnspecified.isChecked = false
@@ -188,6 +192,7 @@ class SearchFragment : Fragment() {
             binding.shippingFree.isChecked = false
             binding.distanceInput.text = null
             binding.zipcodeInput.text = null
+            binding.keywordInput.text = null
         }
 
         binding.keywordInput.addTextChangedListener(onTextChanged = { _, _, _, _ ->
@@ -201,7 +206,9 @@ class SearchFragment : Fragment() {
         binding.zipcodeInput.addTextChangedListener(onTextChanged = { _, _, _, _ ->
             val input = binding.zipcodeInput.text?.toString()?.trim()
             if (input.isNullOrBlank()) {
-                binding.zipcodeAlert.visible()
+                if (binding.radioInputLocation.isChecked) {
+                    binding.zipcodeAlert.visible()
+                }
             } else {
                 binding.zipcodeAlert.gone()
                 lifecycleScope.launch {
