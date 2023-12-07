@@ -110,6 +110,7 @@ class ProductDetailActivity : AppCompatActivity() {
                         ).show()
                         binding.btnCart.setImageResource(R.drawable.ic_cart_plus)
                         productsInfo?.isCollected = false
+                        //通知搜索列表更新按钮状态和心愿清单更新列表和
                         LiveDataEventBus.instance.postCartOperation(CartOperationEvent(false , productsInfo?.itemId?.get(0)))
                     } catch (e: Exception) {
                         e.printStackTrace()
@@ -137,6 +138,7 @@ class ProductDetailActivity : AppCompatActivity() {
                         ).show()
                         binding.btnCart.setImageResource(R.drawable.ic_cart_remove)
                         productsInfo?.isCollected = true
+                        //通知搜索列表更新按钮状态和心愿清单更新列表和
                         LiveDataEventBus.instance.postCartOperation(CartOperationEvent(true , productsInfo?.itemId?.get(0)))
                     } catch (e: Exception) {
                         e.printStackTrace()

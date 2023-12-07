@@ -83,17 +83,20 @@ class SearchResultActivity : AppCompatActivity() {
                         "${productsInfo.title?.get(0)?.substring(0, 10)}... was added to wishlist",
                         Toast.LENGTH_SHORT
                     ).show()
+                    //通知搜索列表更新按钮状态和心愿清单更新列表和
                     LiveDataEventBus.instance.postCartOperation(
                         CartOperationEvent(
                             true,
                             productsInfo.itemId?.get(0)
                         )
                     )
-                    imageView?.isEnabled = true
-                    imageView?.setImageResource(R.drawable.ic_cart_remove)
-                    mAdapter.getItem(it).isCollected = true
                 } catch (e: Exception) {
                     e.printStackTrace()
+                    Toast.makeText(
+                        this@SearchResultActivity,
+                        "Failed to add wishlist",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 } finally {
                     imageView?.isEnabled = true
                 }
@@ -119,20 +122,18 @@ class SearchResultActivity : AppCompatActivity() {
                         }... was removed from wishlist",
                         Toast.LENGTH_SHORT
                     ).show()
+                    //通知搜索列表更新按钮状态和心愿清单更新列表和
                     LiveDataEventBus.instance.postCartOperation(
                         CartOperationEvent(
                             false,
                             productsInfo.itemId?.get(0)
                         )
                     )
-                    imageView?.isEnabled = true
-                    imageView?.setImageResource(R.drawable.ic_cart_plus)
-                    mAdapter.getItem(it).isCollected = false
                 } catch (e: Exception) {
                     e.printStackTrace()
                     Toast.makeText(
                         this@SearchResultActivity,
-                        "Fetch Error Please Try Again",
+                        "Removal from wishlist failed",
                         Toast.LENGTH_SHORT
                     ).show()
                 } finally {
@@ -147,7 +148,7 @@ class SearchResultActivity : AppCompatActivity() {
             startProductDetail(item)
         }
 
-        //查找刷新按钮状态
+        //添加或删除操作 查找并刷新按钮状态
         LiveDataEventBus.instance.cartOperationData.observe(this) { event ->
             mAdapter.getData().find { productInfo ->
                 productInfo.itemId?.get(0) == event.itemId

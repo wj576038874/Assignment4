@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
  * author: wenjie
  * date: 2023/12/6 18:38
  * description: 列表添加和删除心愿单成功之后 通知心愿清单页面刷新 心愿清单数据
+ * 详情添加或者删除 搜索页面需要同步状态
  */
 class LiveDataEventBus private constructor() {
 
@@ -28,6 +29,6 @@ class LiveDataEventBus private constructor() {
 }
 
 data class CartOperationEvent(
-    val add: Boolean,
+    val add: Boolean,//true为添加 false为删除
     val itemId: String?
 )
