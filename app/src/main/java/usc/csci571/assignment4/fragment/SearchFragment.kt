@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -166,6 +167,8 @@ class SearchFragment : Fragment() {
             val zipcode = binding.zipcodeInput.text?.toString()?.trim()
             if (keyword.isNullOrBlank()) {
                 binding.keywordAlert.visible()
+                Toast.makeText(requireContext(), "Please enter mandatory field", Toast.LENGTH_SHORT)
+                    .show()
             } else {
                 binding.keywordAlert.gone()
             }
@@ -174,6 +177,8 @@ class SearchFragment : Fragment() {
                 if (binding.radioInputLocation.isChecked) {
                     if (zipcode.isNullOrBlank()) {
                         binding.zipcodeAlert.visible()
+                        Toast.makeText(requireContext(), "Please enter mandatory field", Toast.LENGTH_SHORT)
+                            .show()
                     } else {
                         binding.zipcodeAlert.gone()
                         if (!keyword.isNullOrBlank()) {

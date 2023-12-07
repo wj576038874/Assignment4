@@ -23,7 +23,7 @@
 
 
         <LinearLayout
-            android:id="@+id/ll_stroe"
+            android:id="@+id/ll_store_name"
             android:layout_width="match_parent"
             android:layout_height="36dp"
             android:layout_marginLeft="16dp"
@@ -47,7 +47,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/ll_feedback"
+            android:id="@+id/ll_feedback_score"
             android:layout_width="match_parent"
             android:layout_height="36dp"
             android:layout_marginLeft="16dp"
@@ -261,7 +261,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/ll_within"
+            android:id="@+id/ll_returns_within"
             android:layout_width="match_parent"
             android:layout_height="36dp"
             android:layout_marginLeft="16dp"
@@ -285,7 +285,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/ll_model"
+            android:id="@+id/ll_refund"
             android:layout_width="match_parent"
             android:layout_height="36dp"
             android:layout_marginLeft="16dp"

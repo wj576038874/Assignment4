@@ -42,7 +42,7 @@ class SimilarItemAdapter :
             .load(similarItem.imageURL)
             .into(holder.binding.cover)
         holder.binding.tvTitle.text = similarItem.title
-        holder.binding.tvPrice.text = similarItem.buyItNowPrice?.value
+        holder.binding.tvPrice.text = "$${similarItem.buyItNowPrice?.value}"
         //P8DT14H50M43S
         holder.binding.tvTimeLeft.text =
             if (similarItem.timeLeftInt > 0) "${similarItem.timeLeftInt} Days Left" else "${similarItem.timeLeftInt} Day Left"

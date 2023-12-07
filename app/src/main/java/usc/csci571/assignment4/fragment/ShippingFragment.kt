@@ -15,7 +15,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import usc.csci571.assignment4.R
 import usc.csci571.assignment4.databinding.FragmentShippingBinding
+import usc.csci571.assignment4.gone
 import usc.csci571.assignment4.viewmodel.InteractionViewModel
+import usc.csci571.assignment4.visible
 
 /**
  * author: wenjie
@@ -46,18 +48,42 @@ class ShippingFragment : Fragment() {
         val shipping = arguments?.getString("param", null)
 
         viewModel.productDetailData.observe(viewLifecycleOwner) {
-            val url = it.itemDetails?.Storefront?.StoreURL
-            val storeName = it.itemDetails?.Storefront?.StoreName.toString()
-            val spannableString = SpannableString(storeName)
-            val urlSpan = URLSpan(url)
-            spannableString.setSpan(urlSpan, 0, storeName.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
-            binding.tvStoreName.text = spannableString
-            binding.tvStoreName.movementMethod = LinkMovementMethod.getInstance()
+            //storeName
+            val storeName = it.itemDetails?.Storefront?.StoreName
+            if (!storeName.isNullOrBlank()) {
+                binding.llStoreName.visible()
+                val url = it.itemDetails.Storefront.StoreURL
+                val spannableString = SpannableString(storeName)
+                val urlSpan = URLSpan(url)
+                spannableString.setSpan(
+                    urlSpan,
+                    0,
+                    storeName.length,
+                    Spanned.SPAN_INCLUSIVE_INCLUSIVE
+                )
+                binding.tvStoreName.text = spannableString
+                binding.tvStoreName.movementMethod = LinkMovementMethod.getInstance()
+            } else {
+                binding.llStoreName.gone()
+            }
 
-            binding.tvFeedbackScore.text = it.itemDetails?.Seller?.FeedbackScore
+            //feedbackScore
+            val feedbackScore = it.itemDetails?.Seller?.FeedbackScore
+            if (!feedbackScore.isNullOrBlank()) {
+                binding.llFeedbackScore.visible()
+                binding.tvFeedbackScore.text = feedbackScore
+            } else {
+                binding.llFeedbackScore.gone()
+            }
 
+            //popularity
             val popularity = it.itemDetails?.Seller?.PositiveFeedbackPercent
-            binding.popularity.score = popularity?.toInt() ?: 0
+            if (popularity != null) {
+                binding.llPopularity.visible()
+                binding.popularity.score = popularity.toInt()
+            } else {
+                binding.llPopularity.gone()
+            }
 
             //FeedbackRatingStar
             binding.ivStar.setImageResource(R.drawable.star_circle)
@@ -92,20 +118,51 @@ class ShippingFragment : Fragment() {
                 }
             }
 
+            //shippingCost
             binding.shippingCost.text = if (shipping == "0.0") "Free" else shipping
 
+            //GlobalShipping
             binding.tvGlobalShipping.text =
                 if (it.itemDetails?.GlobalShipping == true) "YES" else "No"
 
+            //HandlingTime
             binding.tvHandlingTime.text = it.itemDetails?.HandlingTime.toString()
 
-            binding.tvPolicy.text = it.itemDetails?.ReturnPolicy?.ReturnsAccepted
+            //policy
+            val policy = it.itemDetails?.ReturnPolicy?.ReturnsAccepted
+            if (!policy.isNullOrBlank()) {
+                binding.llPopularity.visible()
+                binding.tvPolicy.text = policy
+            } else {
+                binding.llPolicy.gone()
+            }
 
-            binding.tvReturnsWithin.text = it.itemDetails?.ReturnPolicy?.ReturnsWithin
+            //ReturnsWithin
+            val returnsWithin = it.itemDetails?.ReturnPolicy?.ReturnsWithin
+            if (!returnsWithin.isNullOrBlank()) {
+                binding.llReturnsWithin.visible()
+                binding.tvReturnsWithin.text = it.itemDetails?.ReturnPolicy?.ReturnsWithin
+            } else {
+                binding.llReturnsWithin.gone()
+            }
 
-            binding.tvRefund.text = it.itemDetails?.ReturnPolicy?.Refund
+            //Refund
+            val refund = it.itemDetails?.ReturnPolicy?.Refund
+            if (!refund.isNullOrBlank()) {
+                binding.llRefund.visible()
+                binding.tvRefund.text = refund
+            } else {
+                binding.llRefund.gone()
+            }
 
-            binding.tvShippingCostPaidBy.text = it.itemDetails?.ReturnPolicy?.ShippingCostPaidBy
+            //ShippingCostPaidBy
+            val shippingCostPaidBy = it.itemDetails?.ReturnPolicy?.ShippingCostPaidBy
+            if (!shippingCostPaidBy.isNullOrBlank()) {
+                binding.llShippingby.visible()
+                binding.tvShippingCostPaidBy.text = shippingCostPaidBy
+            } else {
+                binding.llShippingby.gone()
+            }
         }
     }
 

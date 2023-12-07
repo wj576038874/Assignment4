@@ -60,8 +60,7 @@ class ProductListAdapter : RecyclerView.Adapter<ProductListAdapter.SearchViewHol
                 productsInfo.shippingInfo?.get(0)?.shippingType?.get(0)
             binding.condition.text =
                 productsInfo.condition?.get(0)?.conditionDisplayName?.get(0)
-            binding.price.text =
-                productsInfo.sellingStatus?.get(0)?.currentPrice?.get(0)?.value
+            binding.price.text = "$${productsInfo.sellingStatus?.get(0)?.currentPrice?.get(0)?.value}"
 
             if (productsInfo.isCollected) {
                 binding.cartOperation.setImageResource(R.drawable.ic_cart_remove)

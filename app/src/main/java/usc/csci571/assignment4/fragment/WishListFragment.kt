@@ -161,7 +161,7 @@ class WishListFragment : Fragment() {
                 ?: 0.toBigDecimal()
         }
         binding.tvTotal.text = "Wishlist Total(${mAdapter.getData().size} items)"
-        binding.tvPrice.text = "$ $totalPrice"
+        binding.tvPrice.text = "$$totalPrice"
     }
 
     override fun onDestroyView() {

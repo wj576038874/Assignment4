@@ -12,7 +12,9 @@ import usc.csci571.assignment4.adapter.ItemSpecificsAdapter
 import usc.csci571.assignment4.adapter.PictureAdapter
 import usc.csci571.assignment4.databinding.FragmnetProductBinding
 import usc.csci571.assignment4.databinding.SearchBinding
+import usc.csci571.assignment4.gone
 import usc.csci571.assignment4.viewmodel.InteractionViewModel
+import usc.csci571.assignment4.visible
 
 /**
  * author: wenjie
@@ -50,13 +52,18 @@ class ProductFragment : Fragment() {
             binding.viewPager2.adapter = pictureAdapter
             binding.tvTitle.text = itemDetails?.Title
             binding.tvPriceWithShipping.text =
-                if (shipping == "0.0") "$ ${itemDetails?.CurrentPrice?.Value} with Free Shipping" else "$ ${itemDetails?.CurrentPrice?.Value} with $shipping shipping"
-            binding.tvPrice.text = "$ ${itemDetails?.CurrentPrice?.Value}"
-            binding.tvBrand.text = "${
-                itemDetails?.ItemSpecifics?.NameValueList?.find {
-                    it.Name == "Brand"
-                }?.Value?.get(0)
-            }"
+                if (shipping == "0.0") "$${itemDetails?.CurrentPrice?.Value} with Free Shipping" else "$${itemDetails?.CurrentPrice?.Value} with $$shipping shipping"
+            binding.tvPrice.text = "$${itemDetails?.CurrentPrice?.Value}"
+
+            val brand = itemDetails?.ItemSpecifics?.NameValueList?.find {
+                it.Name == "Brand"
+            }?.Value?.get(0)
+            if (brand.isNullOrBlank()) {
+                binding.llBrand.gone()
+            } else {
+                binding.llBrand.visible()
+                binding.tvBrand.text = brand
+            }
 
             val specs = itemDetails?.ItemSpecifics?.NameValueList?.flatMap {
                 it.Value ?: listOf()
