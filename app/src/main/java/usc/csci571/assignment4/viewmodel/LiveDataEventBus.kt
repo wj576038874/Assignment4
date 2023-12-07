@@ -8,20 +8,26 @@ import androidx.lifecycle.MutableLiveData
  * date: 2023/12/6 18:38
  * description: 列表添加和删除心愿单成功之后 通知心愿清单页面刷新 心愿清单数据
  */
-class RefreshWishEventBus private constructor() {
+class LiveDataEventBus private constructor() {
 
     companion object {
         val instance by lazy {
-            RefreshWishEventBus()
+            LiveDataEventBus()
         }
     }
 
-    private val _cartOperationData = MutableLiveData<Boolean>()
-    val cartOperationData: LiveData<Boolean>
+    private val _cartOperationData = MutableLiveData<CartOperationEvent>()
+    val cartOperationData: LiveData<CartOperationEvent>
         get() = _cartOperationData
 
-    fun postCartOperation(add: Boolean) {
-        _cartOperationData.value = add
+
+    fun postCartOperation(event: CartOperationEvent) {
+        _cartOperationData.value = event
     }
 
 }
+
+data class CartOperationEvent(
+    val add: Boolean,
+    val itemId: String?
+)

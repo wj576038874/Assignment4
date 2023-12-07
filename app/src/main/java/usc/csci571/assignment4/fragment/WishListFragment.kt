@@ -19,7 +19,7 @@ import usc.csci571.assignment4.databinding.WishListBinding
 import usc.csci571.assignment4.gone
 import usc.csci571.assignment4.http.ApiService
 import usc.csci571.assignment4.http.RetrofitHelper
-import usc.csci571.assignment4.viewmodel.RefreshWishEventBus
+import usc.csci571.assignment4.viewmodel.LiveDataEventBus
 import usc.csci571.assignment4.visible
 
 /**
@@ -57,7 +57,7 @@ class WishListFragment : Fragment() {
         binding.recycleView.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.recycleView.adapter = mAdapter
 
-        RefreshWishEventBus.instance.cartOperationData.observe(viewLifecycleOwner) {
+        LiveDataEventBus.instance.cartOperationData.observe(viewLifecycleOwner) {
             //有添加心愿单操作 就刷新心愿单列表
             if (isLoad) {
                 queryFavorites()

@@ -25,8 +25,9 @@ import usc.csci571.assignment4.fragment.ShippingFragment
 import usc.csci571.assignment4.fragment.SimilarFragment
 import usc.csci571.assignment4.http.ApiService
 import usc.csci571.assignment4.http.RetrofitHelper
+import usc.csci571.assignment4.viewmodel.CartOperationEvent
 import usc.csci571.assignment4.viewmodel.InteractionViewModel
-import usc.csci571.assignment4.viewmodel.RefreshWishEventBus
+import usc.csci571.assignment4.viewmodel.LiveDataEventBus
 
 /**
  * author: wenjie
@@ -109,7 +110,7 @@ class ProductDetailActivity : AppCompatActivity() {
                         ).show()
                         binding.btnCart.setImageResource(R.drawable.ic_cart_plus)
                         productsInfo?.isCollected = false
-                        RefreshWishEventBus.instance.postCartOperation(false)
+                        LiveDataEventBus.instance.postCartOperation(CartOperationEvent(false , productsInfo?.itemId?.get(0)))
                     } catch (e: Exception) {
                         e.printStackTrace()
                         Toast.makeText(
@@ -136,7 +137,7 @@ class ProductDetailActivity : AppCompatActivity() {
                         ).show()
                         binding.btnCart.setImageResource(R.drawable.ic_cart_remove)
                         productsInfo?.isCollected = true
-                        RefreshWishEventBus.instance.postCartOperation(false)
+                        LiveDataEventBus.instance.postCartOperation(CartOperationEvent(true , productsInfo?.itemId?.get(0)))
                     } catch (e: Exception) {
                         e.printStackTrace()
                         Toast.makeText(

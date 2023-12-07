@@ -14,7 +14,8 @@ import usc.csci571.assignment4.adapter.ProductListAdapter
 import usc.csci571.assignment4.databinding.ActivitySearchResultBinding
 import usc.csci571.assignment4.http.ApiService
 import usc.csci571.assignment4.http.RetrofitHelper
-import usc.csci571.assignment4.viewmodel.RefreshWishEventBus
+import usc.csci571.assignment4.viewmodel.CartOperationEvent
+import usc.csci571.assignment4.viewmodel.LiveDataEventBus
 
 /**
  * author: wenjie
@@ -82,7 +83,12 @@ class SearchResultActivity : AppCompatActivity() {
                         "${productsInfo.title?.get(0)?.substring(0, 10)}... was added to wishlist",
                         Toast.LENGTH_SHORT
                     ).show()
-                    RefreshWishEventBus.instance.postCartOperation(true)
+                    LiveDataEventBus.instance.postCartOperation(
+                        CartOperationEvent(
+                            true,
+                            productsInfo.itemId?.get(0)
+                        )
+                    )
                     imageView?.isEnabled = true
                     imageView?.setImageResource(R.drawable.ic_cart_remove)
                     mAdapter.getItem(it).isCollected = true
@@ -113,7 +119,12 @@ class SearchResultActivity : AppCompatActivity() {
                         }... was removed from wishlist",
                         Toast.LENGTH_SHORT
                     ).show()
-                    RefreshWishEventBus.instance.postCartOperation(true)
+                    LiveDataEventBus.instance.postCartOperation(
+                        CartOperationEvent(
+                            false,
+                            productsInfo.itemId?.get(0)
+                        )
+                    )
                     imageView?.isEnabled = true
                     imageView?.setImageResource(R.drawable.ic_cart_plus)
                     mAdapter.getItem(it).isCollected = false
@@ -134,6 +145,28 @@ class SearchResultActivity : AppCompatActivity() {
             val productsInfo = mAdapter.getItem(it)
             val item = Gson().toJson(productsInfo)
             startProductDetail(item)
+        }
+
+        //查找刷新按钮状态
+        LiveDataEventBus.instance.cartOperationData.observe(this) { event ->
+            mAdapter.getData().find { productInfo ->
+                productInfo.itemId?.get(0) == event.itemId
+            }?.let { productInfo ->
+                productInfo.isCollected = event.add
+                mAdapter.getData().indexOf(productInfo).takeIf { index ->
+                    index > -1
+                }?.let { position ->
+                    val imageView: ImageView? =
+                        binding.recycleView.findViewHolderForLayoutPosition(position)?.itemView?.findViewById(
+                            R.id.cart_operation
+                        )
+                    if (event.add) {
+                        imageView?.setImageResource(R.drawable.ic_cart_remove)
+                    } else {
+                        imageView?.setImageResource(R.drawable.ic_cart_plus)
+                    }
+                }
+            }
         }
 
         search()
@@ -163,6 +196,12 @@ class SearchResultActivity : AppCompatActivity() {
                 }
                 val baseResponse = apiService.search(queryMap)
                 binding.recycleView.visible()
+
+                if (baseResponse.productsInfo.isNullOrEmpty()) {
+                    Toast.makeText(this@SearchResultActivity, "Empty Data", Toast.LENGTH_SHORT)
+                        .show()
+                    return@launch
+                }
 
                 mAdapter.setNewData(baseResponse.productsInfo?.map { item ->
                     item.also {
