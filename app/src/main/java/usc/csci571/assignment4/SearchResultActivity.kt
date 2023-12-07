@@ -180,7 +180,7 @@ class SearchResultActivity : AppCompatActivity() {
                 val response = apiService.queryFavorites()
                 val favoriteList = response.productsInfo ?: listOf()
 
-                val queryMap = mutableMapOf<String, String>()
+                val queryMap = mutableMapOf<String, String?>()
                 queryMap["keyword"] = keyword
                 queryMap["category"] = category.toString()
                 if (!currentLocation.isNullOrBlank()) {
@@ -189,12 +189,12 @@ class SearchResultActivity : AppCompatActivity() {
                 if (!distance.isNullOrBlank()) {
                     queryMap["distance"] = distance!!
                 }
-                if (!condition.isNullOrBlank()) {
-                    queryMap["condition"] = condition!!
-                }
-                if (!shipping.isNullOrBlank()) {
-                    queryMap["shipping"] = shipping!!
-                }
+//                if (!condition.isNullOrBlank()) {
+                    queryMap["condition"] = condition
+//                }
+//                if (!shipping.isNullOrBlank()) {
+                    queryMap["shipping"] = shipping
+//                }
                 val baseResponse = apiService.search(queryMap)
                 binding.recycleView.visible()
 

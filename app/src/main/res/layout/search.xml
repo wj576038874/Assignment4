@@ -15,7 +15,6 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
             android:text="Keyword" />
 
         <EditText
@@ -24,8 +23,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Enter Keyword"
-            android:inputType="text"
-            android:text="iphone" />
+            android:inputType="text" />
 
         <TextView
             android:id="@+id/keywordAlert"
@@ -46,7 +44,7 @@
         <Spinner
             android:id="@+id/category"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:entries="@array/categories" />
 
@@ -54,13 +52,13 @@
             android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             android:layout_marginTop="5dp"
             android:text="Condition" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
             android:orientation="horizontal">
 
             <CheckBox
@@ -88,13 +86,11 @@
             android:id="@+id/textView4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
             android:text="Shipping Options" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
             android:orientation="horizontal">
 
             <CheckBox
@@ -114,7 +110,6 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
             android:orientation="horizontal">
 
             <TextView
@@ -204,7 +199,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
             <android.widget.Button

@@ -50,7 +50,7 @@ class ProductFragment : Fragment() {
             binding.viewPager2.adapter = pictureAdapter
             binding.tvTitle.text = itemDetails?.Title
             binding.tvPriceWithShipping.text =
-                if (shipping == "0.0") "$ ${itemDetails?.CurrentPrice?.Value} with Free Shipping" else "$ ${itemDetails?.CurrentPrice?.Value} with $shipping"
+                if (shipping == "0.0") "$ ${itemDetails?.CurrentPrice?.Value} with Free Shipping" else "$ ${itemDetails?.CurrentPrice?.Value} with $shipping shipping"
             binding.tvPrice.text = "$ ${itemDetails?.CurrentPrice?.Value}"
             binding.tvBrand.text = "${
                 itemDetails?.ItemSpecifics?.NameValueList?.find {

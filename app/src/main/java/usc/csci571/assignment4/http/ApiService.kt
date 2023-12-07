@@ -17,7 +17,7 @@ interface ApiService {
 
     //?keyword=iphone&category=58058&currentLocation=30022&distance=12&condition=Used&shipping=FreeShippingOnly
     @GET("/productsQuery")
-    suspend fun search(@QueryMap queryMap: Map<String, String>): ProductResponse
+    suspend fun search(@QueryMap queryMap: Map<String, String?>): ProductResponse
 
     @GET("/modFavorites")
     suspend fun add(@Query("add") add: String = "true", @Query("item") item: String): Any

@@ -157,25 +157,39 @@ class SearchFragment : Fragment() {
      * 事件监听
      */
     private fun initListener() {
+        /**
+         * 4.启用了nearby search时，选择自己输入zipcode，但是还没有输入，
+         * 点击搜索，应该也要同时提示（两个if，不要if-else if，推荐一次性告知用户所有缺失的字段的方式）：
+         */
         binding.submitBtn.setOnClickListener {
-            if (binding.keywordInput.text?.toString()?.trim().isNullOrBlank()) {
+            val keyword = binding.keywordInput.text?.toString()?.trim()
+            val zipcode = binding.zipcodeInput.text?.toString()?.trim()
+            if (keyword.isNullOrBlank()) {
                 binding.keywordAlert.visible()
-                return@setOnClickListener
+            } else {
+                binding.keywordAlert.gone()
             }
-            binding.keywordAlert.gone()
-
             if (binding.enableNearbySearch.isChecked) {
                 //选中定位
                 if (binding.radioInputLocation.isChecked) {
-                    if (binding.zipcodeInput.text?.toString()?.trim().isNullOrBlank()) {
+                    if (zipcode.isNullOrBlank()) {
                         binding.zipcodeAlert.visible()
-                        return@setOnClickListener
+                    } else {
+                        binding.zipcodeAlert.gone()
+                        if (!keyword.isNullOrBlank()) {
+                            search()
+                        }
                     }
-                    binding.zipcodeAlert.gone()
+                } else {
+                    if (!keyword.isNullOrBlank()) {
+                        search()
+                    }
+                }
+            } else {
+                if (!keyword.isNullOrBlank()) {
+                    search()
                 }
             }
-
-            search()
         }
 
         binding.clearBtn.setOnClickListener {
@@ -197,7 +211,7 @@ class SearchFragment : Fragment() {
 
         binding.keywordInput.addTextChangedListener(onTextChanged = { _, _, _, _ ->
             if (binding.keywordInput.text?.toString()?.trim().isNullOrBlank()) {
-                binding.keywordAlert.visible()
+//                binding.keywordAlert.visible()
             } else {
                 binding.keywordAlert.gone()
             }
@@ -237,6 +251,7 @@ class SearchFragment : Fragment() {
 
         binding.radioCurLocation.setOnCheckedChangeListener { buttonView, isChecked ->
             binding.radioInputLocation.isChecked = !isChecked
+            binding.zipcodeAlert.gone()
         }
 
         binding.radioInputLocation.setOnCheckedChangeListener { buttonView, isChecked ->
