@@ -116,7 +116,7 @@ class ProductDetailActivity : AppCompatActivity() {
                         e.printStackTrace()
                         Toast.makeText(
                             this@ProductDetailActivity,
-                            "Fetch Error Please Try Again",
+                            "Removal from wishlist failed",
                             Toast.LENGTH_SHORT
                         ).show()
                     } finally {
@@ -144,7 +144,7 @@ class ProductDetailActivity : AppCompatActivity() {
                         e.printStackTrace()
                         Toast.makeText(
                             this@ProductDetailActivity,
-                            "Fetch Error Please Try Again",
+                            "Failed to add wishlist",
                             Toast.LENGTH_SHORT
                         ).show()
                     } finally {
