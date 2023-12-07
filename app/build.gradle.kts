@@ -57,6 +57,7 @@ dependencies {
 
     //开源库
     implementation("com.github.bumptech.glide:glide:4.12.0")
+    implementation("com.facebook.android:facebook-share:16.2.0")
 //    implementation("com.wssholmes.stark:circular-score:0.1.1"){
 //        exclude(module = "appcompat-v7", group = "com.android.support")
 //        exclude(module = "support-annotations", group = "com.android.support")

@@ -2,6 +2,7 @@ package usc.csci571.assignment4
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -10,6 +11,13 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.share.Sharer
+import com.facebook.share.model.ShareHashtag
+import com.facebook.share.model.ShareLinkContent
+import com.facebook.share.widget.ShareDialog
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
@@ -51,6 +59,9 @@ class ProductDetailActivity : AppCompatActivity() {
 
     private lateinit var pagerAdapter: ProductDetailPageAdapter
 
+    private lateinit var callbackManager: CallbackManager
+    private lateinit var shareDialog: ShareDialog
+
     private val apiService by lazy(LazyThreadSafetyMode.NONE) {
         RetrofitHelper.getRetrofit().create(ApiService::class.java)
     }
@@ -66,6 +77,24 @@ class ProductDetailActivity : AppCompatActivity() {
         binding.toolbar.setNavigationOnClickListener {
             finish()
         }
+        //初始化分享组件
+        callbackManager = CallbackManager.Factory.create()
+        shareDialog = ShareDialog(this)
+        shareDialog.registerCallback(callbackManager, object : FacebookCallback<Sharer.Result> {
+            override fun onCancel() {
+                Toast.makeText(this@ProductDetailActivity, "Cancel Share", Toast.LENGTH_SHORT)
+                    .show()
+            }
+
+            override fun onError(error: FacebookException) {
+                Toast.makeText(this@ProductDetailActivity, "Share Error", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onSuccess(result: Sharer.Result) {
+                Toast.makeText(this@ProductDetailActivity, "Share Success", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        })
 
         pagerAdapter = ProductDetailPageAdapter(
             listOf(
@@ -112,7 +141,12 @@ class ProductDetailActivity : AppCompatActivity() {
                         binding.btnCart.setImageResource(R.drawable.ic_cart_plus)
                         productsInfo?.isCollected = false
                         //通知搜索列表更新按钮状态和心愿清单更新列表和
-                        LiveDataEventBus.instance.postCartOperation(CartOperationEvent(false , productsInfo?.itemId?.get(0)))
+                        LiveDataEventBus.instance.postCartOperation(
+                            CartOperationEvent(
+                                false,
+                                productsInfo?.itemId?.get(0)
+                            )
+                        )
                     } catch (e: Exception) {
                         e.printStackTrace()
                         Toast.makeText(
@@ -140,7 +174,12 @@ class ProductDetailActivity : AppCompatActivity() {
                         binding.btnCart.setImageResource(R.drawable.ic_cart_remove)
                         productsInfo?.isCollected = true
                         //通知搜索列表更新按钮状态和心愿清单更新列表和
-                        LiveDataEventBus.instance.postCartOperation(CartOperationEvent(true , productsInfo?.itemId?.get(0)))
+                        LiveDataEventBus.instance.postCartOperation(
+                            CartOperationEvent(
+                                true,
+                                productsInfo?.itemId?.get(0)
+                            )
+                        )
                     } catch (e: Exception) {
                         e.printStackTrace()
                         Toast.makeText(
@@ -199,7 +238,22 @@ class ProductDetailActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == 100) {
-            Toast.makeText(this, "Share Facebook", Toast.LENGTH_SHORT).show()
+            val shareUrl = productsInfo?.viewItemURL?.get(0) ?: return false
+            if (ShareDialog.canShow(ShareLinkContent::class.java)) {
+                val shareLinkContent = ShareLinkContent.Builder()
+                    //设置分享链接
+                    .setContentUrl(Uri.parse(shareUrl))
+                    //设置引文
+//                    .setQuote("")
+                    //设置话题标签
+//                    .setShareHashtag(
+//                        ShareHashtag.Builder()
+//                            .setHashtag("#ConnectTheWorld")
+//                            .build()
+//                    )
+                    .build()
+                shareDialog.show(shareLinkContent)
+            }
             return true
         }
         return super.onOptionsItemSelected(item)

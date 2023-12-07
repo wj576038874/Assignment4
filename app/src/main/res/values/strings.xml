@@ -23,4 +23,7 @@
         <item>Ascending</item>
         <item>Descending</item>
     </string-array>
+
+    <string name="facebook_app_id">25495201896745794</string>
+    <string name="facebook_client_token">25c0ba4144af929c9aeff260d81712bd</string>
 </resources>
