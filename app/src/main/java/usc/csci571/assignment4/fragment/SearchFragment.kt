@@ -216,7 +216,7 @@ class SearchFragment : Fragment() {
                 binding.keywordAlert.gone()
             }
         })
-
+        binding.zipcodeInput.dropDownHeight = 1000
         binding.zipcodeInput.addTextChangedListener(onTextChanged = { _, _, _, _ ->
             val input = binding.zipcodeInput.text?.toString()?.trim()
             if (input.isNullOrBlank()) {
