@@ -246,11 +246,11 @@ class ProductDetailActivity : AppCompatActivity() {
                     //设置引文
 //                    .setQuote("")
                     //设置话题标签
-//                    .setShareHashtag(
-//                        ShareHashtag.Builder()
-//                            .setHashtag("#ConnectTheWorld")
-//                            .build()
-//                    )
+                    .setShareHashtag(
+                        ShareHashtag.Builder()
+                            .setHashtag("#CSCI571Fall23AndroidApp")
+                            .build()
+                    )
                     .build()
                 shareDialog.show(shareLinkContent)
             }
