@@ -95,6 +95,7 @@ class ProductDetailActivity : AppCompatActivity() {
 
         binding.btnCart.setOnClickListener {
             if (param.isNullOrBlank()) return@setOnClickListener
+            binding.btnCart.isEnabled = false
             if (productsInfo?.isCollected == true) {
                 //删除
                 lifecycleScope.launch {
@@ -120,7 +121,7 @@ class ProductDetailActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
                     } finally {
-
+                        binding.btnCart.isEnabled = true
                     }
                 }
             } else {
@@ -148,7 +149,7 @@ class ProductDetailActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
                     } finally {
-
+                        binding.btnCart.isEnabled = true
                     }
                 }
             }
