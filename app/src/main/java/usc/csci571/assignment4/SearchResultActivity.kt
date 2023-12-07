@@ -1,6 +1,5 @@
 package usc.csci571.assignment4
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
@@ -10,10 +9,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
+import usc.csci571.assignment4.ProductDetailActivity.Companion.startProductDetail
 import usc.csci571.assignment4.adapter.ProductListAdapter
-import usc.csci571.assignment4.bean.ProductsInfo
 import usc.csci571.assignment4.databinding.ActivitySearchResultBinding
-import usc.csci571.assignment4.fragment.WishListFragment
 import usc.csci571.assignment4.http.ApiService
 import usc.csci571.assignment4.http.RetrofitHelper
 import usc.csci571.assignment4.viewmodel.RefreshWishEventBus
@@ -135,9 +133,7 @@ class SearchResultActivity : AppCompatActivity() {
         mAdapter.onItemClickListener = {
             val productsInfo = mAdapter.getItem(it)
             val item = Gson().toJson(productsInfo)
-            startActivity(Intent(this, ProductDetailActivity::class.java).apply {
-                putExtra("product", item)
-            })
+            startProductDetail(item)
         }
 
         search()

@@ -1,5 +1,6 @@
 package usc.csci571.assignment4.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,7 +29,8 @@ class ItemSpecificsAdapter(private val specs: List<String>) :
         return specs.size
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ItemSpecificsHolder, position: Int) {
-        (holder.itemView as TextView).text = "* ${specs[position]}"
+        (holder.itemView as TextView).text = "·${specs[position]}"
     }
 }

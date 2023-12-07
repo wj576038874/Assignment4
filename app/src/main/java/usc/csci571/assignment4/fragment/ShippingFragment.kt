@@ -1,12 +1,16 @@
 package usc.csci571.assignment4.fragment
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned
+import android.text.method.LinkMovementMethod
 import android.text.style.URLSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import usc.csci571.assignment4.R
@@ -38,10 +42,8 @@ class ShippingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.productInfoData.observe(viewLifecycleOwner) {
-            val shipping = it.shippingInfo?.get(0)?.shippingServiceCost?.get(0)?.value
-            binding.shippingCost.text = if (shipping == "0.0") "Free" else shipping
-        }
+
+        val shipping = arguments?.getString("param", null)
 
         viewModel.productDetailData.observe(viewLifecycleOwner) {
             val url = it.itemDetails?.Storefront?.StoreURL
@@ -50,14 +52,47 @@ class ShippingFragment : Fragment() {
             val urlSpan = URLSpan(url)
             spannableString.setSpan(urlSpan, 0, storeName.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
             binding.tvStoreName.text = spannableString
+            binding.tvStoreName.movementMethod = LinkMovementMethod.getInstance()
 
             binding.tvFeedbackScore.text = it.itemDetails?.Seller?.FeedbackScore
 
             val popularity = it.itemDetails?.Seller?.PositiveFeedbackPercent
             binding.popularity.score = popularity ?: 0
 
-            binding.ivStar.setImageResource(R.drawable.star)
+            //FeedbackRatingStar
+            binding.ivStar.setImageResource(R.drawable.star_circle)
+            when (it.itemDetails?.Seller?.FeedbackRatingStar) {
+                "None" -> {
+                    binding.ivStar.imageTintList = ColorStateList.valueOf(Color.BLACK)
+                }
 
+                "Yellow" -> {
+                    binding.ivStar.imageTintList = ColorStateList.valueOf(Color.YELLOW)
+                }
+
+                "Purple" -> {
+                    binding.ivStar.imageTintList =
+                        ColorStateList.valueOf(Color.parseColor("#512DA8"))
+                }
+
+                "Red" -> {
+                    binding.ivStar.imageTintList = ColorStateList.valueOf(Color.RED)
+                }
+
+                "Blue" -> {
+                    binding.ivStar.imageTintList = ColorStateList.valueOf(Color.BLUE)
+                }
+
+                "Turquoise" -> {
+                    //
+                }
+
+                "Green" -> {
+                    binding.ivStar.imageTintList = ColorStateList.valueOf(Color.GREEN)
+                }
+            }
+
+            binding.shippingCost.text = if (shipping == "0.0") "Free" else shipping
 
             binding.tvGlobalShipping.text =
                 if (it.itemDetails?.GlobalShipping == true) "YES" else "No"

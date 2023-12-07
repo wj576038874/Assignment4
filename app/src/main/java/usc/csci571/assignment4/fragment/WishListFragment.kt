@@ -1,7 +1,6 @@
 package usc.csci571.assignment4.fragment
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,19 +8,17 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
-import usc.csci571.assignment4.ProductDetailActivity
+import usc.csci571.assignment4.ProductDetailActivity.Companion.startProductDetail
 import usc.csci571.assignment4.R
 import usc.csci571.assignment4.adapter.ProductListAdapter
 import usc.csci571.assignment4.databinding.WishListBinding
 import usc.csci571.assignment4.gone
 import usc.csci571.assignment4.http.ApiService
 import usc.csci571.assignment4.http.RetrofitHelper
-import usc.csci571.assignment4.viewmodel.InteractionViewModel
 import usc.csci571.assignment4.viewmodel.RefreshWishEventBus
 import usc.csci571.assignment4.visible
 
@@ -69,11 +66,8 @@ class WishListFragment : Fragment() {
 
         mAdapter.onItemClickListener = {
             val productsInfo = mAdapter.getItem(it)
-            startActivity(Intent(requireContext(), ProductDetailActivity::class.java).apply {
-                putExtra("itemTitle", productsInfo.title?.get(0))
-                putExtra("itemId", productsInfo.itemId?.get(0))
-                putExtra("isCollected", productsInfo.isCollected)
-            })
+            val item = Gson().toJson(productsInfo)
+            startProductDetail(item)
         }
 
         mAdapter.onCartRemoveListener = { position ->

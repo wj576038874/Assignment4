@@ -8,4 +8,12 @@
     <style name="Theme.Assignment4.Launcher" parent="Theme.Assignment4">
         <item name="android:windowBackground">@drawable/launch_screen</item>
     </style>
+
+    <declare-styleable name="CircularScoreView">
+        <attr name="score" format="integer"/>
+        <attr name="setTextColor" format="color"/>
+        <attr name="setPrimaryColor" format="color"/>
+        <attr name="setSecondaryColor" format="color"/>
+        <attr name="setBackgroundColor" format="color"/>
+    </declare-styleable>
 </resources>

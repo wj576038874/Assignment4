@@ -57,12 +57,12 @@ dependencies {
 
     //开源库
     implementation("com.github.bumptech.glide:glide:4.12.0")
-    implementation("com.wssholmes.stark:circular-score:0.1.1"){
-        exclude(module = "appcompat-v7", group = "com.android.support")
-        exclude(module = "support-annotations", group = "com.android.support")
-        exclude(module = "recyclerview-v7", group = "com.android.support")
-        exclude(module = "support-v4", group = "com.android.support")
-    }
+//    implementation("com.wssholmes.stark:circular-score:0.1.1"){
+//        exclude(module = "appcompat-v7", group = "com.android.support")
+//        exclude(module = "support-annotations", group = "com.android.support")
+//        exclude(module = "recyclerview-v7", group = "com.android.support")
+//        exclude(module = "support-v4", group = "com.android.support")
+//    }
     annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
 
     implementation("com.google.code.gson:gson:2.10.1")
