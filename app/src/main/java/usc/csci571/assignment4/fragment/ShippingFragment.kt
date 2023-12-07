@@ -80,6 +80,10 @@ class ShippingFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(): ShippingFragment = ShippingFragment()
+        fun newInstance(param: String?): ShippingFragment = ShippingFragment().also {
+            it.arguments = Bundle().apply {
+                putString("param", param)
+            }
+        }
     }
 }

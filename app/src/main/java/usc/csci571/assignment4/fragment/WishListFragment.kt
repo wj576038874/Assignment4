@@ -1,5 +1,6 @@
 package usc.csci571.assignment4.fragment
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -61,8 +62,9 @@ class WishListFragment : Fragment() {
 
         RefreshWishEventBus.instance.cartOperationData.observe(viewLifecycleOwner) {
             //有添加心愿单操作 就刷新心愿单列表
-            queryFavorites()
-            Toast.makeText(context, "queryFavorites", Toast.LENGTH_SHORT).show()
+            if (isLoad) {
+                queryFavorites()
+            }
         }
 
         mAdapter.onItemClickListener = {
@@ -99,6 +101,7 @@ class WishListFragment : Fragment() {
                         binding.recycleView.gone()
                         binding.cardEmpty.visible()
                     }
+                    refreshTotalView()
                 } catch (e: Exception) {
                     e.printStackTrace()
                     Toast.makeText(
@@ -124,17 +127,21 @@ class WishListFragment : Fragment() {
     private fun queryFavorites() {
         lifecycleScope.launch {
             try {
-                val baseResponse = apiService.queryFavorites()
-                if (baseResponse.productsInfo.isNullOrEmpty()) {
+                val response = apiService.queryFavorites()
+                if (response.productsInfo.isNullOrEmpty()) {
                     binding.recycleView.gone()
+                    binding.llTotal.gone()
                     binding.cardEmpty.visible()
                 } else {
+                    binding.llTotal.visible()
                     binding.recycleView.visible()
                     binding.cardEmpty.gone()
-                    mAdapter.setNewData(baseResponse.productsInfo.onEach {
+                    mAdapter.setNewData(response.productsInfo.onEach {
                         it.isCollected = true
                     })
+                    refreshTotalView()
                 }
+                isLoad = true
             } catch (e: Exception) {
                 e.printStackTrace()
                 Toast.makeText(
@@ -144,9 +151,23 @@ class WishListFragment : Fragment() {
                 ).show()
             } finally {
                 binding.progress.gone()
-                isLoad = true
             }
         }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun refreshTotalView() {
+        if (mAdapter.getData().isEmpty()) {
+            binding.llTotal.gone()
+        } else {
+            binding.llTotal.visible()
+        }
+        val totalPrice = mAdapter.getData().sumOf {
+            it.sellingStatus?.get(0)?.currentPrice?.get(0)?.value?.toBigDecimal()
+                ?: 0.toBigDecimal()
+        }
+        binding.tvTotal.text = "Wishlist Total(${mAdapter.getData().size} items)"
+        binding.tvPrice.text = "$ $totalPrice"
     }
 
     override fun onDestroyView() {
@@ -155,9 +176,6 @@ class WishListFragment : Fragment() {
     }
 
     companion object {
-
-        var isRefresh = false
-
         fun newInstance(): WishListFragment = WishListFragment()
     }
 }

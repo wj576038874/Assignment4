@@ -39,6 +39,10 @@ class ProductFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val shipping = arguments?.getString("param", null)
+
+
         viewModel.productDetailData.observe(viewLifecycleOwner) { productDetail ->
             val itemDetails = productDetail.itemDetails
             val pictureList = itemDetails?.PictureURL
@@ -46,7 +50,7 @@ class ProductFragment : Fragment() {
             binding.viewPager2.adapter = pictureAdapter
             binding.tvTitle.text = itemDetails?.Title
             binding.tvPriceWithShipping.text =
-                "$ ${itemDetails?.CurrentPrice?.Value} with Free Shipping"
+                if (shipping == "0.0") "$ ${itemDetails?.CurrentPrice?.Value} with Free Shipping" else "$ ${itemDetails?.CurrentPrice?.Value} with $shipping"
             binding.tvPrice.text = "$ ${itemDetails?.CurrentPrice?.Value}"
             binding.tvBrand.text = "${
                 itemDetails?.ItemSpecifics?.NameValueList?.find {
@@ -69,6 +73,10 @@ class ProductFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(): ProductFragment = ProductFragment()
+        fun newInstance(param: String?): ProductFragment = ProductFragment().also {
+            it.arguments = Bundle().apply {
+                putString("param", param)
+            }
+        }
     }
 }

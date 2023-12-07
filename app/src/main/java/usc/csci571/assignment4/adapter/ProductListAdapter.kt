@@ -54,32 +54,32 @@ class ProductListAdapter : RecyclerView.Adapter<ProductListAdapter.SearchViewHol
             .load(productsInfo.galleryURL?.get(0))
             .into(holder.binding.cover)
         holder.apply {
-            holder.binding.title.text = productsInfo.title?.get(0)
-            holder.binding.zipcode.text = "Zip:${productsInfo.postalCode?.get(0)}"
-            holder.binding.shippingType.text =
+            binding.title.text = productsInfo.title?.get(0)
+            binding.zipcode.text = "Zip:${productsInfo.postalCode?.get(0)}"
+            binding.shippingType.text =
                 productsInfo.shippingInfo?.get(0)?.shippingType?.get(0)
-            holder.binding.condition.text =
+            binding.condition.text =
                 productsInfo.condition?.get(0)?.conditionDisplayName?.get(0)
-            holder.binding.price.text =
+            binding.price.text =
                 productsInfo.sellingStatus?.get(0)?.currentPrice?.get(0)?.value
-        }
 
-        if (productsInfo.isCollected) {
-            holder.binding.cartOperation.setImageResource(R.drawable.ic_cart_remove)
-        } else {
-            holder.binding.cartOperation.setImageResource(R.drawable.ic_cart_plus)
-        }
-
-        holder.binding.cartOperation.setOnClickListener {
             if (productsInfo.isCollected) {
-                onCartRemoveListener?.invoke(holder.adapterPosition)
+                binding.cartOperation.setImageResource(R.drawable.ic_cart_remove)
             } else {
-                onCartPlusListener?.invoke(holder.adapterPosition)
+                binding.cartOperation.setImageResource(R.drawable.ic_cart_plus)
             }
-        }
 
-        holder.itemView.setOnClickListener {
-            onItemClickListener?.invoke(holder.adapterPosition)
+            binding.cartOperation.setOnClickListener {
+                if (productsInfo.isCollected) {
+                    onCartRemoveListener?.invoke(holder.adapterPosition)
+                } else {
+                    onCartPlusListener?.invoke(holder.adapterPosition)
+                }
+            }
+
+            itemView.setOnClickListener {
+                onItemClickListener?.invoke(holder.adapterPosition)
+            }
         }
     }
 
@@ -94,15 +94,6 @@ class ProductListAdapter : RecyclerView.Adapter<ProductListAdapter.SearchViewHol
         notifyItemRemoved(position)
     }
 
-    class SearchViewHolder(val binding: ProductCardBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-//        val cover: ImageView = view.findViewById(R.id.cover)
-//        val title: TextView = view.findViewById(R.id.title)
-//        val zipcode: TextView = view.findViewById(R.id.zipcode)
-//        val shipping: TextView = view.findViewById(R.id.shipping_type)
-//        val condition: TextView = view.findViewById(R.id.condition)
-//        val price: TextView = view.findViewById(R.id.price)
-//        val cartOperation: ImageView = view.findViewById(R.id.cart_operation)
-    }
+    class SearchViewHolder(val binding: ProductCardBinding) : RecyclerView.ViewHolder(binding.root)
 
 }

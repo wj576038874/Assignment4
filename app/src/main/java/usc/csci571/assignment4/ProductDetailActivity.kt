@@ -40,17 +40,7 @@ class ProductDetailActivity : AppCompatActivity() {
 
     private val viewModel by viewModels<InteractionViewModel>()
 
-    private val pagerAdapter by lazy(LazyThreadSafetyMode.NONE) {
-        ProductDetailPageAdapter(
-            listOf(
-                ProductFragment.newInstance(),
-                ShippingFragment.newInstance(),
-                PhotoFragment.newInstance(),
-                SimilarFragment.newInstance(),
-            ),
-            this
-        )
-    }
+    private lateinit var pagerAdapter: ProductDetailPageAdapter
 
     private val apiService by lazy(LazyThreadSafetyMode.NONE) {
         RetrofitHelper.getRetrofit().create(ApiService::class.java)
@@ -67,16 +57,23 @@ class ProductDetailActivity : AppCompatActivity() {
         binding.toolbar.setNavigationOnClickListener {
             finish()
         }
+
+        pagerAdapter = ProductDetailPageAdapter(
+            listOf(
+                //运费传递进去
+                ProductFragment.newInstance(productsInfo?.shippingInfo?.get(0)?.shippingServiceCost?.get(0)?.value),
+                ShippingFragment.newInstance(productsInfo?.shippingInfo?.get(0)?.shippingServiceCost?.get(0)?.value),
+                PhotoFragment.newInstance(),
+                SimilarFragment.newInstance(),
+            ),
+            this
+        )
         binding.viewPager2.adapter = pagerAdapter
 
         if (productsInfo?.isCollected == true) {
             binding.btnCart.setImageResource(R.drawable.ic_cart_remove)
         } else {
             binding.btnCart.setImageResource(R.drawable.ic_cart_plus)
-        }
-
-        productsInfo?.let {
-            viewModel.postInfo(it)
         }
 
         binding.btnCart.setOnClickListener {
@@ -95,6 +92,7 @@ class ProductDetailActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
                         binding.btnCart.setImageResource(R.drawable.ic_cart_plus)
+                        productsInfo?.isCollected = false
                         RefreshWishEventBus.instance.postCartOperation(false)
                     } catch (e: Exception) {
                         e.printStackTrace()
@@ -121,6 +119,7 @@ class ProductDetailActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
                         binding.btnCart.setImageResource(R.drawable.ic_cart_remove)
+                        productsInfo?.isCollected = true
                         RefreshWishEventBus.instance.postCartOperation(false)
                     } catch (e: Exception) {
                         e.printStackTrace()

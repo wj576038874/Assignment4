@@ -76,7 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_weight="1"
-            android:text="Wishlist Total(3 items)"
+            tools:text="Wishlist Total(3 items)"
             android:textColor="@color/white" />
 
 
@@ -84,7 +84,8 @@
             android:id="@+id/tv_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="$1212.56"
+            tools:text="$1212.56"
+            android:layout_marginRight="8dp"
             android:textColor="@color/white" />
     </LinearLayout>
 
