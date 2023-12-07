@@ -51,7 +51,7 @@ data class Seller(
     val UserID: String? = null,
     val FeedbackRatingStar: String? = null,
     val FeedbackScore: String? = null,
-    val PositiveFeedbackPercent: Int = 0
+    val PositiveFeedbackPercent: Float = 0f
 )
 
 data class ReturnPolicy(

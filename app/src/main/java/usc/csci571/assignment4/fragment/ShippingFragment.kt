@@ -57,7 +57,7 @@ class ShippingFragment : Fragment() {
             binding.tvFeedbackScore.text = it.itemDetails?.Seller?.FeedbackScore
 
             val popularity = it.itemDetails?.Seller?.PositiveFeedbackPercent
-            binding.popularity.score = popularity ?: 0
+            binding.popularity.score = popularity?.toInt() ?: 0
 
             //FeedbackRatingStar
             binding.ivStar.setImageResource(R.drawable.star_circle)
